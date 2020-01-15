@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <string.h>
 
+
 int main(int argc, char** argv ) {
 
-	int iLettersCount;
+	int stringtoint=0;
 	char* argv1 = argv[1];
+int ilgis=0;
 
 	if( argc < 2 ) {
-		printf("Nepateiktas parametras*/\n");
+		printf("No argument*/\n");
 		return( 0 );
 	}
 
@@ -17,35 +19,39 @@ int main(int argc, char** argv ) {
 		push eax
 		push ebx
 		push ecx
+		push edx
 
-		mov ebx, 1                     
-		mov ecx, argv1       /* Address of argv[1]            */ 
-		mov edx, iLettersCount 
-		dec ecx                /* loop increases ecx at start   */
-							   /*so we decrease to compensate  */  
-		sloop:                                                     
-		inc ecx                /* ecx points to next char in string */
-		mov al, byte ptr [ecx] /* byte of string to al          */                     
-		sub al,'0'            /* skaicius              */ 
-		imul al,ebx /* minus 48 is skaiciaus*/ 
-		add edx,al/* dadedu int */ 
-		imul ebx,10/*dauginu is 10 */ 
-		dec ecx/* decreasu stringa*/ 
-		cmp ecx,argv1/* copmaprinu */ 
-		je exit_loop/* exitas*/ 
-		jmp sloop/*else jump back */ 
+		mov ebx, 1  
+		xor eax,eax                   
+		mov ecx, argv1       
+		dec ecx  
+		xor edx,edx          				  
+	  
+		sloop:                                                           
+		inc ecx
+		mov al, byte ptr [ecx]                   
+		sub al,48  
+		mov [eax],al 
+		imul eax,ebx
+		add edx,eax
+	        imul ebx,10
+		cmp argv1,ecx
+                je exit_loop
+		jmp sloop
 
 exit_loop:    
-mov [iLettersCount], edx
+mov [stringtoint], edx
 		pop ecx
 		pop ebx
 		pop eax
 		pop edx
+		
+		
         
 
 	};
 
-	printf("integer of string is %s is %d\n", argv[1], iLettersCount );
+	printf("integer of string is %s is %d\n", argv[1], stringtoint );
 
 	return(0);
 }
